@@ -1,0 +1,150 @@
+#: import web webbrowser
+#: import hex_color kivy.utils.get_color_from_hex
+
+<IDInput>:
+    next_input: None
+    halign: 'center'
+    multiline: False
+    allow_copy: False
+    font_size: self.height * 4/5
+    cursor_color: 0.01, 0.33, 0.64, 1
+
+<IDPopup>:
+    size_hint: .8, .4
+    auto_dismiss: False
+    title: 'ID Number'
+    separator_color: hex_color('#10c8b1')
+
+    FloatLayout:
+
+        Label:
+            id: popup_body
+            text: "Please enter your ID number."
+            pos_hint: {'center_x': 0.5, 'center_y': 0.85}
+            size_hint: 1, 0.15
+            font_name: 'poppins'
+            font_size: self.width * 0.03
+
+        BoxLayout:
+            id: id_boxlayout
+            orientation: 'horizontal'
+            pos_hint: {'center_x': 0.5, 'center_y': 0.55}
+            size_hint: 0.6, 0.25
+            spacing: self.width * 0.1
+
+            IDInput:
+                id: input_0
+                next_input: input_1
+                focus: True
+            IDInput
+                id: input_1
+                next_input: input_2
+            IDInput:
+                id: input_2
+                next_input: input_3
+            IDInput
+                id: input_3
+
+        RoundedButton:
+            id: submit_button
+            pos_hint: {'center_x': 0.5, 'y': 0.075}
+            size_hint: 0.35, 0.2
+            text: 'Submit'
+            on_release: root.submit()
+
+
+<ImageButton@ButtonBehavior+BoxLayout>:
+    orientation: 'vertical'
+    spacing: self.height * 0.125
+    padding: self.height * 0.165
+    text: ''
+    icon: ''
+
+    canvas:
+        Color:
+            rgba: [1, 1, 1, 1]
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: './assets/image-button-normal.png' if self.state == 'normal' else './assets/image-button-down.png'
+
+    Label:
+        size_hint_x: 1
+        size_hint_y: 0.05 if self.text != '' else 0
+        text: root.text
+        bold: True
+        color: 0, 0, 0, 1
+        font_name: 'poppins'
+
+    Image:
+        source: root.icon
+        allow_stretch: True
+        keep_ratio: True
+
+
+<HomeScreen>:
+
+    Label:
+        canvas.before:
+            Color:
+                rgba: hex_color('#10c8b1')
+            RoundedRectangle:
+                size: self.size
+                pos: self.pos
+                radius: [0, 0, 15, 15]
+
+        size_hint: 1, 0.15625
+        pos: 0, _content.top
+        markup: True
+        text: '[b]Linear Graphs[/b]'
+        font_size: self.width / 19
+        font_name: 'poppins'
+
+    BoxLayout:
+        id: _content
+        orientation: 'vertical'
+        size_hint: 1, 0.84375
+
+        Label:
+            size_hint: 1, 0.3
+            text: "Thank you for downloading the Linear Graphs app! Please select one of the following option below."
+            text_size: self.width, None
+            font_size: '17sp'
+            height: self.texture_size[1]
+            halign: 'center'
+            valign: 'top'
+            color: 0, 0, 0, 1
+            padding_x: self.width * 0.1
+            font_name: 'poppins'
+
+        GridLayout:
+
+            cols: 2
+            spacing: 10
+            size_hint: 1, 0.7
+            padding: 30
+            spacing: 30
+
+            ImageButton:
+                text: "Tutorial Activity"
+                icon: "./assets/tutorial-activity.png"
+                on_release:
+                    root.manager.transition.direction = 'left'
+                    root.manager.current = 'tutorial_screen'
+
+            ImageButton:
+                text: "Video Tutorial"
+                icon: "./assets/video-tutorial.png"
+                on_release: web.open('https://www.youtube.com/watch?v=qM_3imPGbqY')
+
+            ImageButton:
+                text: "Task"
+                icon: "./assets/ccc-task.png"
+                on_release:
+                    root.manager.transition.direction = 'left'
+                    root.manager.current = 'question_0'
+
+            ImageButton:
+                text: "Study Information"
+                icon: "./assets/study-information.png"
+                on_release: web.open('https://lunet-my.sharepoint.com/:b:/g/personal/majs6_lunet_lboro_ac_uk/EYQa-j5W_ONPjsU5aMbXvtsBltSMJZPnEZ2_fL2NE5hWyQ?e=A5AQHx')

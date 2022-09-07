@@ -1,0 +1,123 @@
+#: import hex_color kivy.utils.get_color_from_hex
+
+
+<MathsText@Label>:
+	markup: True
+	font_name: 'maths_font'
+	color: 0, 0, 0, 1
+	font_size: self.width * 0.18
+
+<TutorialNavigation@FloatLayout>:
+
+	Label:
+		id: question
+		size_hint: 728/768, 101/250
+		pos_hint: {'center_x': 0.5, 'y': 0}
+		
+		canvas.before:
+			Color:
+				rgba: hex_color('#10c8b1')
+			RoundedRectangle:
+				size: self.size
+				pos: self.pos
+				radius: [10, 10, 10, 10]
+
+		text: 'Find the equation of the line that goes through the points (1, 5) and (2, 7)'
+		bold: True
+		markup: True
+		font_name: 'poppins'
+		font_size: self.width * 0.022
+
+	RoundedButton:
+		id: back
+		pos_hint: {'x': 20/768, 'top': 203/250}
+		text: 'Back'
+		on_release:
+			root.parent.parent.manager.transition.direction = 'right'
+            root.parent.parent.manager.current = 'home_screen'
+
+    Label:
+    	size_hint: None, None
+    	size: [root.width - back.right - (question.x * 2), root.height * 0.5]
+    	pos: [back.right + question.x, question.top + (self.height - question.height)/2]
+    	text: "Copy the text shown below. You can toggle between the pen and the eraser by clicking the icon in the top right of the canvas."
+    	markup: True
+    	markup: True
+        color: [0, 0, 0, 1]
+        font_name: 'poppins'
+        text_size: self.size
+        halign: 'center'
+        valign: 'middle'
+
+<TutorialScreen>:
+
+	FloatLayout:
+
+		TutorialNavigation:
+			id: navigation
+			pos_hint: {'x': 0, 'y': 0.79}
+			size_hint: 1, 0.2
+
+		CanvasWidget:
+			id: canvas_widget
+			canvas.after:
+				Color:
+					rgba: [0.5, 0.5, 0.5, 1]
+				Line:
+					rounded_rectangle: [self.x, self.y, self.width, self.height, 20]
+				Color:
+					rgba: [1, 1, 1, 1]
+			pos_hint: {'center_x': 0.5, 'y': 0.025}
+			size_hint: 0.95, 0.74
+			eraser: eraser
+
+		Eraser:
+			id: eraser
+			height: navigation.height / 2
+
+		IconButton:
+			pen_icon: True
+			icon: './assets/pen.png' if self.pen_icon else './assets/eraser.png'
+			pos: canvas_widget.right - self.width - (canvas_widget.width * 0.01), canvas_widget.top - self.height - (canvas_widget.width * 0.01)
+			height: navigation.height / 2
+			on_release: canvas_widget.switch_draw_mode(self)
+
+		BoxLayout:
+	    	pos: [canvas_widget.x + canvas_widget.width * 0.075, canvas_widget.y + (canvas_widget.height - self.height)/2]
+	    	size_hint: 0.25, 0.68
+	    	orientation: 'vertical'
+
+	    	BoxLayout:
+	    		size_hint: 1, 0.25
+	    		orientation: 'horizontal'
+
+				canvas.after:
+					Color:
+						rgba: [0, 0, 0, 1]
+					Line:
+						points: [self.x, self.y + self.height/2 - 2, self.x + self.width/2, self.y + self.height/2 - 2]
+						width: 1
+				
+				MathsText:
+					text: '7 - 5\n2 - 1'
+					font_size: self.width * 0.38
+				
+				MathsText:
+					text: '= 2'
+					font_size: self.width * 0.38
+
+			MathsText:
+				size_hint: 1, 0.1875
+				text: '[i]y[/i] = 2[i]x[/i] + c'
+
+			MathsText:
+				size_hint: 1, 0.1875
+				text: '5 = 2 + [i]c[/i]'
+
+			MathsText:
+				size_hint: 1, 0.1875
+				text: '[i]c[/i] = 3'
+
+			MathsText:
+				size_hint: 1, 0.1875
+				text: '[i]y[/i] = 2[i]x[/i] + 3'
