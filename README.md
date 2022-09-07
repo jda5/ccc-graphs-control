@@ -1,4 +1,4 @@
-# RCT Control App
+# Control App
 
 This repository contains the source code for the control app used in a randomised controlled trial (RCT) to assess the efficacy of CCC: Graphs. This app was developed as part of a doctoral thesis submitted in partial fulfilment of the requirements for the award of Doctor of Philosophy of Loughborough University.
 
